@@ -24,18 +24,23 @@ También incluye un modo CLI para el procesamiento directo de texto.
    pip install -r requirements.txt
    ```
 
+## Estructura del Proyecto
+
+- `splitter.py`: Implementación core del divisor de texto
+- `api_server.py`: Servidor API FastAPI
+
 ## Ejecutar el Servidor API
 
 Para iniciar el servidor API, ejecuta:
 
 ```sh
-python splitter.py --api
+python api_server.py
 ```
 
 Por defecto, el servidor se ejecuta en `http://0.0.0.0:9000`. Puedes cambiar el puerto usando la opción `--port`:
 
 ```sh
-python splitter.py --api --port 8000
+python api_server.py --port 8000
 ```
 
 ### Punto de acceso API

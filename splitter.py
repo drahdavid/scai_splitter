@@ -1,22 +1,6 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-import uvicorn
 import argparse
-
-
-app = FastAPI(title="Text Splitter API")
-
-
-class SplitTextRequest(BaseModel):
-    text: str
-    chunk_size: int = 100
-    chunk_overlap: int = 0
-
-
-class SplitTextResponse(BaseModel):
-    chunks: List[str]
 
 
 class TextChunkSplitter:
@@ -51,16 +35,6 @@ class TextChunkSplitter:
         return all_chunks
 
 
-@app.post("/split", response_model=SplitTextResponse)
-def split_text_endpoint(request: SplitTextRequest):
-    splitter = TextChunkSplitter(
-        chunk_size=request.chunk_size,
-        chunk_overlap=request.chunk_overlap
-    )
-    chunks = splitter.split_text(request.text)
-    return SplitTextResponse(chunks=chunks)
-
-
 def main():
     parser = argparse.ArgumentParser(description="Split text into chunks")
     parser.add_argument(
@@ -69,17 +43,7 @@ def main():
     parser.add_argument(
         "--overlap", type=int, default=0, help="Number of characters to overlap"
     )
-    parser.add_argument(
-        "--api", action="store_true", help="Run as API server"
-    )
-    parser.add_argument(
-        "--port", type=int, default=9000, help="Port for API server"
-    )
     args = parser.parse_args()
-
-    if args.api:
-        uvicorn.run(app, host="0.0.0.0", port=args.port)
-        return
 
     # Example text
     sample_text = """
